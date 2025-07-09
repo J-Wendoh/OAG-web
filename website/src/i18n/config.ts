@@ -7,6 +7,7 @@ const resources = {
       nav: {
         home: 'Home',
         about: 'About Us',
+        'legal-education': 'Legal Education',
         departments: 'Departments',
         opportunities: 'Opportunities',
         records: 'Records',
@@ -158,6 +159,7 @@ const resources = {
       nav: {
         home: 'Nyumbani',
         about: 'Kuhusu Sisi',
+        'legal-education': 'Elimu ya Kisheria',
         departments: 'Idara',
         opportunities: 'Fursa',
         records: 'Rekodi',
@@ -309,6 +311,7 @@ const resources = {
       nav: {
         home: 'Accueil',
         about: 'À Propos',
+        'legal-education': 'Éducation Juridique',
         departments: 'Départements',
         opportunities: 'Opportunités',
         records: 'Dossiers',
@@ -460,6 +463,7 @@ const resources = {
       nav: {
         home: '首页',
         about: '关于我们',
+        'legal-education': '法律教育',
         departments: '部门',
         opportunities: '机会',
         records: '记录',
@@ -611,6 +615,7 @@ const resources = {
       nav: {
         home: 'Startseite',
         about: 'Über uns',
+        'legal-education': 'Rechtserziehung',
         departments: 'Abteilungen',
         opportunities: 'Möglichkeiten',
         records: 'Aufzeichnungen',
@@ -762,6 +767,7 @@ const resources = {
       nav: {
         home: 'Guriga',
         about: 'Naga',
+        'legal-education': 'Waxbarashada Sharciga',
         departments: 'Waaxaha',
         opportunities: 'Fursa',
         records: 'Rekodi',

@@ -8,9 +8,11 @@
     "server": "node server.cjs",
     "client": "vite",
     "build": "vite build",
+    "build:production": "npm run init-news && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "import-news": "node ../scripts/import-news.js"
+    "import-news": "node ../scripts/import-news.js",
+    "init-news": "node ../scripts/init-production-news.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3",
@@ -31,6 +33,7 @@
     "@eslint/js": "^9.9.1",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
+    "@vercel/node": "^3.0.21",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.18",
     "concurrently": "^8.2.2",

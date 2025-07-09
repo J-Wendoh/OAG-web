@@ -71,7 +71,7 @@ const HeroSection: React.FC = () => {
     },
     {
       id: 5,
-      image: '/UN HUMAN RIGHTS STAKEHOLDERS.jpg',
+      image: '/administration.jpeg',
       alt: 'International Human Rights Engagement',
       title: 'Global Human Rights Partnership',
       subtitle: 'Kenya\'s Commitment to International Justice',

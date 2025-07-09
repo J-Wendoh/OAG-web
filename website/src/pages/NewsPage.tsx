@@ -2,27 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, User, ArrowRight, ArrowLeft, Crown, Users } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { apiRequest, API_CONFIG, isApiAvailable, apiLog } from '../utils/api-config';
+import { Calendar, User, ArrowRight, ArrowLeft, Crown, Users, Search, Filter } from 'lucide-react';
+import {
+  newsArticles,
+  getFeaturedNews,
+  getPublishedNews,
+  searchNews,
+  getNewsByCategory,
+  type NewsArticle
+} from '../data/newsData';
 
-interface NewsArticle {
-  id: string;
-  title_en: string;
-  title_sw: string;
-  excerpt_en: string | null;
-  excerpt_sw: string | null;
-  content_en: string;
-  content_sw: string;
-  featured_image_url: string | null;
-  status: string;
-  is_featured: boolean;
-  author_id: string | null;
-  tags: string[] | null;
-  created_at: string;
-  updated_at: string;
-  published_at: string | null;
-}
+
 
 const NewsPage: React.FC = () => {
   const { t } = useTranslation();
@@ -38,47 +28,20 @@ const NewsPage: React.FC = () => {
 
   const fetchNews = async () => {
     try {
-      apiLog('Fetching news articles...');
+      // Use static news data for better performance and reliability
+      const publishedArticles = getPublishedNews();
+      const featuredArticles = getFeaturedNews();
 
-      // Try API first, then fallback to Supabase
-      const apiAvailable = await isApiAvailable();
+      // Set featured article (first featured article)
+      setFeaturedArticle(featuredArticles[0] || null);
 
-      if (apiAvailable) {
-        apiLog('Using API endpoint for news');
-        const articles = await apiRequest<NewsArticle[]>(API_CONFIG.ENDPOINTS.NEWS);
+      // Set regular articles (non-featured articles)
+      const regularArticles = publishedArticles.filter(article => !article.is_featured);
+      setNewsArticles(regularArticles);
 
-        // Find featured articles and regular articles
-        const featured = articles.find((article: NewsArticle) => article.is_featured);
-        const regular = articles.filter((article: NewsArticle) => !article.is_featured);
-
-        setFeaturedArticle(featured || null);
-        setNewsArticles(regular);
-      } else {
-        apiLog('Using Supabase for news');
-        // Use Supabase as fallback
-        const { data: articles, error: supabaseError } = await supabase
-          .from('news_articles')
-          .select('*')
-          .eq('status', 'published')
-          .order('published_at', { ascending: false })
-          .limit(20);
-
-        if (supabaseError) {
-          throw new Error(`Supabase error: ${supabaseError.message}`);
-        }
-
-        const newsData = articles || [];
-        const featured = newsData.find((article: NewsArticle) => article.is_featured);
-        const regular = newsData.filter((article: NewsArticle) => !article.is_featured);
-
-        setFeaturedArticle(featured || null);
-        setNewsArticles(regular);
-      }
     } catch (err) {
-      console.error('Error fetching news:', err);
-      setError('Failed to load news articles. Please check your internet connection.');
-
-      // Set fallback data if available
+      console.error('Error loading news:', err);
+      setError('Failed to load news articles.');
       setNewsArticles([]);
       setFeaturedArticle(null);
     } finally {

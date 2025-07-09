@@ -5,11 +5,32 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist-combined"
+        "distDir": "dist-combined",
+        "buildCommand": "cd website && npm run build:production"
       }
     }
   ],
   "rewrites": [
+    {
+      "source": "/api/news/search",
+      "destination": "/api/news?action=search"
+    },
+    {
+      "source": "/api/news/featured",
+      "destination": "/api/news?action=featured"
+    },
+    {
+      "source": "/api/news/import",
+      "destination": "/api/news-import"
+    },
+    {
+      "source": "/api/news",
+      "destination": "/api/news"
+    },
+    {
+      "source": "/api/health",
+      "destination": "/api/health"
+    },
     {
       "source": "/admin/(.*)",
       "destination": "/admin/$1"

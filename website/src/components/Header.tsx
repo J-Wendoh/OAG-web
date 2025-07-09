@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, Menu, X, Volume2, Home, Users, Building, Phone, Briefcase, Zap, FileText, Clock } from 'lucide-react';
+import { Search, Menu, X, Volume2, Home, Users, Building, Phone, Briefcase, Zap, FileText, Clock, BookOpen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation } from 'react-router-dom';
 import LanguageToggle from './LanguageToggle';
 import SearchModal from './SearchModal';
+import NotificationCenter from './NotificationCenter';
 
 // Import images
 import courtOfArmsImage from '../assets/images/courtofarms.jpeg';
@@ -33,6 +34,7 @@ const Header: React.FC = () => {
   const navItems = [
     { key: 'home', href: '/', icon: Home },
     { key: 'about', href: '/about', icon: Users },
+    { key: 'legal-education', href: '/legal-education', icon: BookOpen },
     { key: 'opportunities', href: '/opportunities', icon: Briefcase },
     { key: 'records', href: '/records', icon: FileText },
     { key: 'services', href: '/services', icon: Building },
@@ -216,6 +218,9 @@ const Header: React.FC = () => {
               >
                 <Volume2 className={`w-4 h-4 ${isAudioPlaying ? 'animate-bounce' : ''}`} />
               </button>
+
+              {/* Notifications */}
+              <NotificationCenter userRole="public" />
 
               {/* Language Toggle */}
               <LanguageToggle />

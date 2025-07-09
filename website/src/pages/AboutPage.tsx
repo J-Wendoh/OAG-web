@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Users, Target, Eye, Award, FileText, Heart, ArrowLeft, Calendar, MapPin, Phone, Mail, Menu, X } from 'lucide-react';
 import TypewriterText from '../components/TypewriterText';
+import RightsEducationVideo from '../components/RightsEducationVideo';
+import AttorneyGeneralHistorySection from '../components/AttorneyGeneralHistorySection';
 
 // Import images - Enhanced with new professional imagery
 const aboutImage = '/6.png'; // Office building exterior
@@ -471,144 +473,11 @@ const AboutPage: React.FC = () => {
         );
 
       case 'attorney-general-history':
-        return (
-          <div className="space-y-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Attorney General History</h2>
-            <p className="text-gray-700 leading-relaxed mb-8">
-              Since Kenya's independence in 1963, the Office of the Attorney General has been led by distinguished
-              legal minds who have shaped our nation's legal landscape. Each Attorney General has contributed
-              uniquely to Kenya's constitutional development and legal evolution.
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {attorneyGeneralHistory.map((ag, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="group relative bg-white rounded-2xl shadow-luxury overflow-hidden hover:shadow-luxury-lg transition-all duration-500 border border-gray-100 hover:border-kenya-green-200"
-                >
-                  {/* Card Image */}
-                  <div className="relative h-64 overflow-hidden">
-                    <img
-                      src={ag.image}
-                      alt={`${ag.name} - ${ag.title}`}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      loading="lazy"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.src = '/AG.jpg'; // Fallback image
-                      }}
-                    />
-
-                    {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-                    {/* Period Badge */}
-                    <div className="absolute top-4 left-4">
-                      <div className="bg-kenya-red-600 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-                        {ag.period}
-                      </div>
-                    </div>
-
-                    {/* Order Number */}
-                    <div className="absolute top-4 right-4">
-                      <div className="w-10 h-10 bg-kenya-green-600 text-white rounded-full flex items-center justify-center text-sm font-bold shadow-lg">
-                        {index + 1}
-                      </div>
-                    </div>
-
-                    {/* Name and Title Overlay */}
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <h3 className="text-lg font-bold mb-1 leading-tight">{ag.name}</h3>
-                      <p className="text-sm opacity-90 leading-tight">{ag.title}</p>
-                    </div>
-                  </div>
-
-                  {/* Card Content */}
-                  <div className="p-6">
-                    {/* Significance */}
-                    <div className="mb-4">
-                      <p className="text-gray-700 text-sm leading-relaxed font-medium">
-                        {ag.significance}
-                      </p>
-                    </div>
-
-                    {/* Achievements Preview */}
-                    <div className="space-y-2">
-                      <h4 className="text-sm font-semibold text-kenya-green-900 uppercase tracking-wide">
-                        Key Achievements
-                      </h4>
-                      <div className="space-y-1">
-                        {ag.achievements.slice(0, 2).map((achievement, achIndex) => (
-                          <div key={achIndex} className="flex items-start space-x-2 text-xs text-gray-600">
-                            <div className="flex-shrink-0 w-1.5 h-1.5 bg-kenya-green-500 rounded-full mt-1.5"></div>
-                            <span className="leading-relaxed">{achievement}</span>
-                          </div>
-                        ))}
-                        {ag.achievements.length > 2 && (
-                          <p className="text-xs text-kenya-green-600 font-medium">
-                            +{ag.achievements.length - 2} more achievements
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Hover Overlay with Full Details */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-kenya-green-900/95 to-kenya-green-800/95 opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-center p-6 text-white">
-                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                      <h3 className="text-xl font-bold mb-2">{ag.name}</h3>
-                      <p className="text-kenya-green-100 font-semibold mb-1">{ag.title}</p>
-                      <p className="text-sm text-kenya-green-200 mb-4">{ag.period}</p>
-
-                      <div className="space-y-3">
-                        <div>
-                          <h4 className="text-sm font-semibold text-kenya-green-100 uppercase tracking-wide mb-2">
-                            Historical Significance
-                          </h4>
-                          <p className="text-sm leading-relaxed text-white/90">
-                            {ag.significance}
-                          </p>
-                        </div>
-
-                        <div>
-                          <h4 className="text-sm font-semibold text-kenya-green-100 uppercase tracking-wide mb-2">
-                            All Achievements
-                          </h4>
-                          <div className="space-y-1 max-h-32 overflow-y-auto">
-                            {ag.achievements.map((achievement, achIndex) => (
-                              <div key={achIndex} className="flex items-start space-x-2 text-xs">
-                                <div className="flex-shrink-0 w-1.5 h-1.5 bg-kenya-green-300 rounded-full mt-1.5"></div>
-                                <span className="leading-relaxed text-white/90">{achievement}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-
-            <div className="mt-8 bg-gradient-to-br from-kenya-green-50 to-kenya-green-100 p-6 rounded-xl border border-kenya-green-200">
-              <h4 className="text-lg font-semibold text-kenya-green-900 mb-3">Legacy of Excellence</h4>
-              <p className="text-gray-700 leading-relaxed">
-                Each Attorney General has built upon the foundation laid by their predecessors, creating a legacy
-                of legal excellence, constitutional adherence, and public service. From the establishment of
-                independent Kenya's legal framework to the implementation of the 2010 Constitution and beyond,
-                our office has consistently evolved to meet the changing needs of our nation while upholding
-                the highest standards of legal practice and constitutional governance.
-              </p>
-            </div>
-          </div>
-        );
+        return <AttorneyGeneralHistorySection />;
 
       case 'mandate':
         return (
-          <div className="space-y-6">
+          <div className="space-y-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Our Mandate</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
@@ -627,6 +496,25 @@ const AboutPage: React.FC = () => {
                 <h3 className="text-lg font-semibold text-kenya-green-700 mb-3">Constitutional Protection</h3>
                 <p className="text-gray-700">Safeguarding the Constitution and ensuring adherence to the rule of law.</p>
               </div>
+            </div>
+
+            {/* Rights Education Video Section - Moved after Constitutional Protection */}
+            <div className="mt-12">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  {t('about.mandate.rightsEducation.title', 'Know Your Constitutional Rights')}
+                </h3>
+                <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                  {t('about.mandate.rightsEducation.description', 'Understanding your constitutional rights is fundamental to participating in our democracy. Watch this educational video to learn about your rights and freedoms under the 2010 Constitution of Kenya.')}
+                </p>
+              </div>
+
+              <RightsEducationVideo
+                size="large"
+                showTitle={false}
+                showDescription={false}
+                className="max-w-4xl mx-auto"
+              />
             </div>
           </div>
         );

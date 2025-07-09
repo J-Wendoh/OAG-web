@@ -17,6 +17,7 @@ import DepartmentsPage from './pages/DepartmentsPage';
 import OpportunitiesPage from './pages/OpportunitiesPage';
 import RecordsPage from './pages/RecordsPage';
 import AdminPage from './pages/AdminPage';
+import LegalEducationPage from './pages/LegalEducationPage';
 import ComplaintSystem from './components/ComplaintSystem';
 import ComplaintStatusCheck from './components/ComplaintStatusCheck';
 import SheriaBot from './components/SheriaBot';
@@ -59,6 +60,7 @@ function App() {
             <Route path="/departments" element={<DepartmentsPage />} />
             <Route path="/opportunities" element={<OpportunitiesPage />} />
             <Route path="/records" element={<RecordsPage />} />
+            <Route path="/legal-education" element={<LegalEducationPage />} />
             <Route path="/admin" element={<AdminPage />} />
             <Route path="/complaint-status" element={<ComplaintStatusCheck />} />
           </Routes>

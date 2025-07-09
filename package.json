@@ -12,7 +12,8 @@
     "install:all": "npm ci && cd website && npm ci && cd ../admin && npm ci"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.50.3"
+    "@supabase/supabase-js": "^2.50.3",
+    "react-youtube": "^10.1.0"
   },
   "engines": {
     "node": ">=18.0.0",
