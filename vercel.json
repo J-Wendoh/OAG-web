@@ -75,11 +75,6 @@
       ]
     }
   ],
-  "functions": {
-    "website/src/pages/api/news/import.ts": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "env": {
     "NODE_ENV": "production"
   }
