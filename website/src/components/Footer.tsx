@@ -16,8 +16,8 @@ const Footer: React.FC = () => {
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
-              <img 
-                src="/coat-of-arms.png" 
+              <img
+                src="/courtofarms.jpeg"
                 alt={t('footer.logoAlt', 'Kenya Court of Arms')}
                 className="h-12 w-12"
               />

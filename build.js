@@ -37,6 +37,9 @@ if (fs.existsSync('dist-combined')) {
 // Build website
 console.log('🌐 Building main website...');
 runCommand('npm ci --production=false', 'website');
+
+// Set production environment for website build
+process.env.NODE_ENV = 'production';
 runCommand('npm run build', 'website');
 
 if (!fs.existsSync('website/dist')) {
@@ -48,6 +51,9 @@ console.log('✅ Website build completed');
 // Build admin panel
 console.log('🔐 Building admin panel...');
 runCommand('npm ci --production=false', 'admin');
+
+// Set production environment for admin build
+process.env.NODE_ENV = 'production';
 runCommand('npm run build', 'admin');
 
 if (!fs.existsSync('admin/dist')) {

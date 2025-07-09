@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Download, 
-  RefreshCw, 
-  CheckCircle, 
-  XCircle, 
-  Clock, 
+import {
+  Download,
+  RefreshCw,
+  CheckCircle,
+  XCircle,
+  Clock,
   FileText,
   AlertTriangle,
   Play,
   Pause
 } from 'lucide-react';
+import { apiRequest, API_CONFIG, isApiAvailable, apiLog } from '../utils/api-config';
 
 interface ImportStats {
   processed: number;
@@ -61,12 +62,17 @@ const NewsImportPanel: React.FC = () => {
 
   const fetchImportStatus = async () => {
     try {
-      const response = await fetch('http://localhost:3001/api/news/import', {
-        signal: AbortSignal.timeout(5000) // 5 second timeout
-      });
+      // Check if API is available, otherwise skip import functionality
+      const apiAvailable = await isApiAvailable();
+      if (!apiAvailable) {
+        apiLog('News import not available - API not configured');
+        return;
+      }
 
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      const response = await apiRequest<any>(API_CONFIG.ENDPOINTS.NEWS_IMPORT_STATUS || API_CONFIG.ENDPOINTS.NEWS_IMPORT);
+
+      if (!response) {
+        throw new Error('No response from import status endpoint');
       }
 
       const result = await response.json();
@@ -90,7 +96,13 @@ const NewsImportPanel: React.FC = () => {
     setMessage('');
 
     try {
-      const response = await fetch('http://localhost:3001/api/news/import', {
+      // Check if API is available
+      const apiAvailable = await isApiAvailable();
+      if (!apiAvailable) {
+        throw new Error('News import API is not available. Please ensure the backend service is running.');
+      }
+
+      const response = await apiRequest<any>(API_CONFIG.ENDPOINTS.NEWS_IMPORT, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

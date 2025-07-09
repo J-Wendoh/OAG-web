@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { Calendar, ArrowRight, Crown, Users } from 'lucide-react';
+import { supabase } from '../lib/supabase';
+import { apiRequest, API_CONFIG, isApiAvailable, apiLog } from '../utils/api-config';
 
 interface NewsArticle {
   id: string;
@@ -32,16 +34,32 @@ const MostRecentUpdates: React.FC = () => {
   useEffect(() => {
     const fetchRecentNews = async () => {
       try {
-        const response = await fetch('http://localhost:3001/api/news');
-        if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        apiLog('Fetching recent news updates...');
+
+        // Try API first, then fallback to Supabase
+        const apiAvailable = await isApiAvailable();
+
+        if (apiAvailable) {
+          apiLog('Using API endpoint for recent news');
+          const articles = await apiRequest<NewsArticle[]>(API_CONFIG.ENDPOINTS.NEWS);
+          const recentArticles = articles.slice(0, 2);
+          setRecentUpdates(recentArticles);
+        } else {
+          apiLog('Using Supabase for recent news');
+          // Use Supabase as fallback
+          const { data: articles, error: supabaseError } = await supabase
+            .from('news_articles')
+            .select('*')
+            .eq('status', 'published')
+            .order('published_at', { ascending: false })
+            .limit(2);
+
+          if (supabaseError) {
+            throw new Error(`Supabase error: ${supabaseError.message}`);
+          }
+
+          setRecentUpdates(articles || []);
         }
-
-        const articles = await response.json();
-
-        // Get the 2 most recent articles
-        const recentArticles = articles.slice(0, 2);
-        setRecentUpdates(recentArticles);
       } catch (err) {
         console.error('Error fetching recent news:', err);
         setError(err instanceof Error ? err.message : 'Failed to load news');
