@@ -1,0 +1,243 @@
+{
+  "departments": [
+    {
+      "id": 1,
+      "name": "Administration",
+      "brief": "Coordinates records, transport, HR, ICT, finance & audit to support all departmental functions.",
+      "details": "Oversees programs, departmental administration, asset management, records, transport, HR development, ICT, finance, supply chain, and public communications.",
+      "image": "/images/departments/administration.jpg"
+    },
+    {
+      "id": 2,
+      "name": "Division of Legal Affairs",
+      "brief": "Provides legal advice to government ministries on human rights, constitutional and anti-corruption matters.",
+      "details": "Advises MDAs on legal affairs, human rights, constitutional implementation, anti‑corruption policy and oversight on the regulation of the legal profession.",
+      "image": "/images/departments/legal-affairs.jpg"
+    },
+    {
+      "id": 3,
+      "name": "International Law Division",
+      "brief": "Handles Kenya's international treaties, trade agreements, maritime law, and transnational legal disputes.",
+      "details": "Manages treaties as Kenya's Treaty Registry, provides legal advice on bilateral/regional law, represents Kenya in international arbitration and judicial cooperation.",
+      "image": "/images/departments/international-law.jpg"
+    },
+    {
+      "id": 4,
+      "name": "Advocates Complaints Commission",
+      "brief": "Receives and investigates complaints related to advocate misconduct.",
+      "details": "Established under the Advocates Act to receive and inquire into complaints against advocates, pending transformation into a semi-autonomous agency.",
+      "image": "/images/departments/advocates-complaints.jpg"
+    },
+    {
+      "id": 5,
+      "name": "Government Transactions Division",
+      "brief": "Legal advisor on public procurement, PPPs, project finance, and large-scale government contracts.",
+      "details": "Provides legal opinions related to Vision 2030 projects, PPPs, extractives, PPPs, finance agreements, infrastructure, and ICT contracts.",
+      "image": "/images/departments/government-transactions.jpg"
+    },
+    {
+      "id": 6,
+      "name": "Department of Justice",
+      "brief": "Leads constitutional policy, human rights oversight, access to justice and legal reforms.",
+      "details": "Advises on the Constitution, international law, human rights, consumer protection, legal aid, coordinates treaty reporting, and regulates the legal profession.",
+      "image": "/images/departments/justice.jpg"
+    },
+    {
+      "id": 7,
+      "name": "Registrar General",
+      "brief": "Registers marriages, societies, coats of arms, adoptions, and newspapers.",
+      "details": "Registers civil, Christian, Hindu, societal bodies, adoptions, coats of arms, newspaper registrations, and manages marriage/divorce records.",
+      "image": "/images/departments/registrar-general.jpg"
+    },
+    {
+      "id": 8,
+      "name": "Legislative Drafting",
+      "brief": "Develops and vets legislative proposals and statutory instruments.",
+      "details": "Drafts legislation and advises government agencies on law-making processes.",
+      "image": "/images/departments/legislative-drafting.jpg"
+    },
+    {
+      "id": 9,
+      "name": "Legal Advisory & Research Division",
+      "brief": "Provides in-depth legal advisory, policy research, and statutory interpretation services.",
+      "details": "Conducts legal research and offers policy frameworks and advisory services across government on legislative matters.",
+      "image": "/images/departments/legal-advisory.jpg"
+    },
+    {
+      "id": 10,
+      "name": "Civil Litigation",
+      "brief": "Represents the State in civil cases and constitutional litigation.",
+      "details": "Conducts civil litigations, alternative dispute resolutions, and defends the Republic in courts.",
+      "image": "/images/departments/civil-litigation.jpg"
+    },
+    {
+      "id": 11,
+      "name": "Victim Protection Board",
+      "brief": "Provides victim rehabilitation, compensation, and protective services.",
+      "details": "Established under the Victim Protection Act to advise the Cabinet Secretary on victim rights and implement support programs.",
+      "image": "/images/departments/victim-protection.jpg"
+    },
+    {
+      "id": 12,
+      "name": "Public Trustee (Administrator General)",
+      "brief": "Handles estates, trusts, guardianships and public fiduciary services.",
+      "details": "Administers estates of persons without wills or executors, trusts, and public deposit management.",
+      "image": "/images/departments/public-trustee.jpg"
+    },
+    {
+      "id": 13,
+      "name": "National Legal Aid Service",
+      "brief": "Offers free legal representation to marginalized citizens.",
+      "details": "Provides legal assistance and representation to indigent individuals under constitutional rights.",
+      "image": "/images/departments/legal-aid.jpg"
+    },
+    {
+      "id": 14,
+      "name": "National Anti‑Corruption Campaign Steering Committee",
+      "brief": "Leads national anti-corruption advocacy and public education campaigns.",
+      "details": "Established by Gazette Notice to coordinate anti‑corruption awareness and prevention across the country.",
+      "image": "/images/departments/anti-corruption.jpg"
+    },
+    {
+      "id": 15,
+      "name": "Governance, Justice, Law & Order Sector (GJLOS)",
+      "brief": "Coordinates justice sector reforms across governance and security institutions.",
+      "details": "Brings together justice and security agencies to implement sector-wide reforms and ensure rule of law.",
+      "image": "/images/departments/gjlos.jpg"
+    },
+    {
+      "id": 16,
+      "name": "Criminal Justice Division",
+      "brief": "Oversees criminal prosecutions and coordinates with law enforcement agencies.",
+      "details": "Manages criminal justice policy, prosecution guidelines, and coordinates with DPP and police services.",
+      "image": "/images/departments/criminal-justice.jpg"
+    },
+    {
+      "id": 17,
+      "name": "Constitutional Affairs Division",
+      "brief": "Monitors constitutional implementation and provides constitutional interpretation.",
+      "details": "Ensures constitutional compliance across government and provides guidance on constitutional matters.",
+      "image": "/images/departments/constitutional-affairs.jpg"
+    },
+    {
+      "id": 18,
+      "name": "Human Rights Division",
+      "brief": "Promotes and protects human rights through policy and legal frameworks.",
+      "details": "Develops human rights policy, monitors compliance, and coordinates with international human rights bodies.",
+      "image": "/images/departments/human-rights.jpg"
+    },
+    {
+      "id": 19,
+      "name": "Commercial Law Division",
+      "brief": "Provides legal advice on commercial transactions and business regulations.",
+      "details": "Advises on commercial law, business regulations, and supports economic development through legal frameworks.",
+      "image": "/images/departments/commercial-law.jpg"
+    },
+    {
+      "id": 20,
+      "name": "Environmental Law Division",
+      "brief": "Handles environmental litigation and policy development.",
+      "details": "Provides legal advice on environmental matters, climate change, and natural resource management.",
+      "image": "/images/departments/environmental-law.jpg"
+    },
+    {
+      "id": 21,
+      "name": "Family Law Division",
+      "brief": "Manages family law matters, child protection, and domestic relations.",
+      "details": "Handles family law policy, child welfare, adoption procedures, and domestic violence legal frameworks.",
+      "image": "/images/departments/family-law.jpg"
+    },
+    {
+      "id": 22,
+      "name": "Immigration Law Division",
+      "brief": "Provides legal guidance on immigration, citizenship, and refugee matters.",
+      "details": "Advises on immigration policy, citizenship applications, and refugee protection frameworks.",
+      "image": "/images/departments/immigration-law.jpg"
+    },
+    {
+      "id": 23,
+      "name": "Intellectual Property Division",
+      "brief": "Protects intellectual property rights and manages IP policy.",
+      "details": "Handles intellectual property law, patents, trademarks, and copyright protection policies.",
+      "image": "/images/departments/intellectual-property.jpg"
+    },
+    {
+      "id": 24,
+      "name": "Labor Law Division",
+      "brief": "Oversees employment law, labor relations, and workplace rights.",
+      "details": "Provides legal advice on labor law, employment disputes, and workplace safety regulations.",
+      "image": "/images/departments/labor-law.jpg"
+    },
+    {
+      "id": 25,
+      "name": "Tax Law Division",
+      "brief": "Handles tax policy, revenue law, and fiscal legal matters.",
+      "details": "Provides legal advice on taxation, revenue collection, and fiscal policy implementation.",
+      "image": "/images/departments/tax-law.jpg"
+    },
+    {
+      "id": 26,
+      "name": "Public Health Law Division",
+      "brief": "Manages health law policy, medical regulations, and public health legal frameworks.",
+      "details": "Advises on health law, medical practice regulations, and public health emergency legal frameworks.",
+      "image": "/images/departments/public-health-law.jpg"
+    },
+    {
+      "id": 27,
+      "name": "Education Law Division",
+      "brief": "Handles education policy, institutional law, and academic legal matters.",
+      "details": "Provides legal advice on education policy, institutional governance, and academic freedom.",
+      "image": "/images/departments/education-law.jpg"
+    },
+    {
+      "id": 28,
+      "name": "Land Law Division",
+      "brief": "Manages land law, property rights, and land administration legal frameworks.",
+      "details": "Handles land law policy, property disputes, and land administration legal guidance.",
+      "image": "/images/departments/land-law.jpg"
+    },
+    {
+      "id": 29,
+      "name": "Energy Law Division",
+      "brief": "Provides legal advice on energy policy, regulations, and sector governance.",
+      "details": "Handles energy law, renewable energy policy, and energy sector regulatory frameworks.",
+      "image": "/images/departments/energy-law.jpg"
+    },
+    {
+      "id": 30,
+      "name": "Transport Law Division",
+      "brief": "Manages transport law, aviation regulations, and infrastructure legal matters.",
+      "details": "Provides legal advice on transport policy, aviation law, and infrastructure development.",
+      "image": "/images/departments/transport-law.jpg"
+    },
+    {
+      "id": 31,
+      "name": "Information Technology Law Division",
+      "brief": "Handles cyber law, data protection, and digital governance legal frameworks.",
+      "details": "Provides legal advice on cyber security, data protection, and digital transformation policies.",
+      "image": "/images/departments/it-law.jpg"
+    },
+    {
+      "id": 32,
+      "name": "Financial Services Law Division",
+      "brief": "Manages banking law, financial regulations, and capital markets legal frameworks.",
+      "details": "Handles financial services law, banking regulations, and capital markets legal guidance.",
+      "image": "/images/departments/financial-services.jpg"
+    },
+    {
+      "id": 33,
+      "name": "Public Procurement Law Division",
+      "brief": "Oversees procurement law, tender regulations, and public contracting legal frameworks.",
+      "details": "Provides legal advice on public procurement, tender processes, and government contracting.",
+      "image": "/images/departments/procurement-law.jpg"
+    }
+  ],
+  "featured": [
+    {"id": 3, "includeVideo": true, "videoUrl": "/videos/departments/international-law.mp4"},
+    {"id": 6, "includeVideo": true, "videoUrl": "/videos/departments/justice.mp4"},
+    {"id": 7, "includeVideo": true, "videoUrl": "/videos/departments/registrar-general.mp4"},
+    {"id": 11, "includeVideo": true, "videoUrl": "/videos/departments/victim-protection.mp4"},
+    {"id": 13, "includeVideo": true, "videoUrl": "/videos/departments/legal-aid.mp4"},
+    {"id": 14, "includeVideo": true, "videoUrl": "/videos/departments/anti-corruption.mp4"}
+  ]
+} 

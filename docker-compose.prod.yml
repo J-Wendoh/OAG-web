@@ -1,0 +1,219 @@
+# =====================================================
+# OAG WEB SYSTEM - PRODUCTION DOCKER COMPOSE
+# =====================================================
+# Production deployment with monitoring and security
+
+version: '3.8'
+
+services:
+  # Main web application
+  oag-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: oag-web-app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      # SSL certificates
+      - ./ssl/certs:/etc/ssl/certs:ro
+      - ./ssl/private:/etc/ssl/private:ro
+      # Logs
+      - ./logs/nginx:/var/log/nginx
+      # Configuration
+      - ./deployment/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    environment:
+      - NODE_ENV=production
+    networks:
+      - oag-network
+    depends_on:
+      - monitoring
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.oag-web.rule=Host(`ag.go.ke`)"
+      - "traefik.http.routers.oag-web.tls=true"
+      - "traefik.http.routers.oag-web.tls.certresolver=letsencrypt"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Reverse proxy and load balancer
+  traefik:
+    image: traefik:v2.10
+    container_name: oag-traefik
+    restart: unless-stopped
+    command:
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=admin@ag.go.ke"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+      - "--log.level=INFO"
+      - "--accesslog=true"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+      - ./logs/traefik:/var/log/traefik
+    networks:
+      - oag-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.ag.go.ke`)"
+      - "traefik.http.routers.traefik.tls=true"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik.service=api@internal"
+
+  # Monitoring with Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: oag-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - oag-network
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: oag-grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin123}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    networks:
+      - oag-network
+    depends_on:
+      - prometheus
+
+  # Log aggregation with Loki
+  loki:
+    image: grafana/loki:latest
+    container_name: oag-loki
+    restart: unless-stopped
+    ports:
+      - "3100:3100"
+    volumes:
+      - ./monitoring/loki.yml:/etc/loki/local-config.yaml:ro
+      - loki-data:/loki
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - oag-network
+
+  # Log shipping with Promtail
+  promtail:
+    image: grafana/promtail:latest
+    container_name: oag-promtail
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/promtail.yml:/etc/promtail/config.yml:ro
+      - ./logs:/var/log:ro
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
+    command: -config.file=/etc/promtail/config.yml
+    networks:
+      - oag-network
+    depends_on:
+      - loki
+
+  # Uptime monitoring
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: oag-uptime
+    restart: unless-stopped
+    ports:
+      - "3001:3001"
+    volumes:
+      - uptime-data:/app/data
+    networks:
+      - oag-network
+
+  # Security scanning
+  trivy:
+    image: aquasec/trivy:latest
+    container_name: oag-security-scan
+    restart: "no"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - trivy-cache:/root/.cache/trivy
+    command: ["server", "--listen", "0.0.0.0:4954"]
+    ports:
+      - "4954:4954"
+    networks:
+      - oag-network
+
+  # Backup service
+  backup:
+    image: alpine:latest
+    container_name: oag-backup
+    restart: unless-stopped
+    volumes:
+      - ./backups:/backups
+      - ./logs:/logs:ro
+      - ./ssl:/ssl:ro
+    environment:
+      - BACKUP_SCHEDULE=0 2 * * *  # Daily at 2 AM
+    command: |
+      sh -c "
+        apk add --no-cache dcron rsync tar gzip &&
+        echo '0 2 * * * /backup.sh' | crontab - &&
+        cat > /backup.sh << 'EOF'
+        #!/bin/sh
+        DATE=\$$(date +%Y%m%d_%H%M%S)
+        mkdir -p /backups/\$$DATE
+        tar -czf /backups/\$$DATE/logs.tar.gz /logs
+        tar -czf /backups/\$$DATE/ssl.tar.gz /ssl
+        find /backups -type d -mtime +30 -exec rm -rf {} +
+        EOF
+        chmod +x /backup.sh &&
+        crond -f
+      "
+    networks:
+      - oag-network
+
+volumes:
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
+  loki-data:
+    driver: local
+  uptime-data:
+    driver: local
+  trivy-cache:
+    driver: local
+
+networks:
+  oag-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

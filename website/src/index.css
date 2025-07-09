@@ -1,0 +1,169 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Kenya Flag Colors - Luxury Design System */
+:root {
+  --kenya-red: #DC143C;
+  --kenya-black: #000000;
+  --kenya-green: #006600;
+  --kenya-white: #FFFFFF;
+
+  /* Extended luxury color palette */
+  --kenya-red-50: #fef2f2;
+  --kenya-red-100: #fee2e2;
+  --kenya-red-200: #fecaca;
+  --kenya-red-300: #fca5a5;
+  --kenya-red-400: #f87171;
+  --kenya-red-500: #ef4444;
+  --kenya-red-600: #dc2626;
+  --kenya-red-700: #b91c1c;
+  --kenya-red-800: #991b1b;
+  --kenya-red-900: #7f1d1d;
+
+  --kenya-green-50: #f0fdf4;
+  --kenya-green-100: #dcfce7;
+  --kenya-green-200: #bbf7d0;
+  --kenya-green-300: #86efac;
+  --kenya-green-400: #4ade80;
+  --kenya-green-500: #22c55e;
+  --kenya-green-600: #16a34a;
+  --kenya-green-700: #15803d;
+  --kenya-green-800: #166534;
+  --kenya-green-900: #14532d;
+
+  /* Luxury design tokens */
+  --luxury-gold: #D4AF37;
+  --luxury-gold-light: #F7E98E;
+  --luxury-gold-dark: #B8860B;
+  --luxury-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --luxury-shadow-lg: 0 35px 60px -12px rgba(0, 0, 0, 0.35);
+  --luxury-gradient: linear-gradient(135deg, var(--kenya-red) 0%, var(--kenya-green) 100%);
+  --luxury-gradient-subtle: linear-gradient(135deg, rgba(220, 20, 60, 0.1) 0%, rgba(0, 102, 0, 0.1) 100%);
+
+  /* Premium typography */
+  --font-luxury: 'Inter', 'Merriweather', system-ui, -apple-system, sans-serif;
+  --font-display: 'Merriweather', Georgia, serif;
+}
+
+/* Luxury Base Styles */
+@layer base {
+  body {
+    font-family: var(--font-luxury);
+    background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+}
+
+/* Luxury Component Styles */
+@layer components {
+  /* Premium Card Styles */
+  .luxury-card {
+    @apply bg-white rounded-2xl shadow-xl border border-gray-100;
+    box-shadow: var(--luxury-shadow);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .luxury-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--luxury-shadow-lg);
+  }
+
+  /* Premium Button Styles */
+  .btn-luxury-primary {
+    @apply px-8 py-4 rounded-xl font-semibold text-white;
+    background: var(--luxury-gradient);
+    box-shadow: 0 10px 25px rgba(220, 20, 60, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-luxury-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(220, 20, 60, 0.4);
+  }
+
+  .btn-luxury-secondary {
+    @apply px-8 py-4 rounded-xl font-semibold border-2;
+    border-color: var(--kenya-green);
+    color: var(--kenya-green);
+    background: rgba(0, 102, 0, 0.05);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .btn-luxury-secondary:hover {
+    background: var(--kenya-green);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 102, 0, 0.3);
+  }
+
+  /* Magazine-style layouts */
+  .magazine-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+  }
+
+  .magazine-card {
+    @apply luxury-card overflow-hidden;
+    position: relative;
+  }
+
+  .magazine-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--luxury-gradient);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .magazine-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Micro-interactions */
+  .micro-bounce {
+    transition: transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .micro-bounce:hover {
+    transform: scale(1.05);
+  }
+
+  .micro-slide {
+    transition: transform 0.3s ease;
+  }
+
+  .micro-slide:hover {
+    transform: translateX(8px);
+  }
+
+  /* Luxury gradients */
+  .gradient-kenya {
+    background: var(--luxury-gradient);
+  }
+
+  .gradient-kenya-subtle {
+    background: var(--luxury-gradient-subtle);
+  }
+
+  /* Premium shadows */
+  .shadow-luxury {
+    box-shadow: var(--luxury-shadow);
+  }
+
+  .shadow-luxury-lg {
+    box-shadow: var(--luxury-shadow-lg);
+  }
+}

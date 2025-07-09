@@ -1,0 +1,12 @@
+{
+  "name": "oag-scripts",
+  "version": "1.0.0",
+  "description": "Scripts for OAG Web System",
+  "main": "import-news.js",
+  "scripts": {
+    "import-news": "node import-news.js"
+  },
+  "dependencies": {
+    "sqlite3": "^5.1.6"
+  }
+}
