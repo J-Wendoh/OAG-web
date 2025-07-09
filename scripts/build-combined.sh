@@ -49,7 +49,7 @@ rm -rf dist-combined
 # Build the main website
 print_status "Building main website..."
 cd website
-npm ci --silent
+npm ci --silent --production=false
 npm run build
 cd ..
 
@@ -63,7 +63,7 @@ print_success "Website build completed"
 # Build the admin panel
 print_status "Building admin panel..."
 cd admin
-npm ci --silent
+npm ci --silent --production=false
 npm run build
 cd ..
 

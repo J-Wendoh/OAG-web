@@ -1,5 +1,21 @@
 {
+  "name": "oag-web-system",
+  "version": "1.0.0",
+  "description": "Office of the Attorney General - Kenya Web System",
+  "scripts": {
+    "build": "node build.js",
+    "build:combined": "node build.js",
+    "build:website": "cd website && npm ci && npm run build",
+    "build:admin": "cd admin && npm ci && npm run build",
+    "dev:website": "cd website && npm run dev",
+    "dev:admin": "cd admin && npm run dev",
+    "install:all": "npm ci && cd website && npm ci && cd ../admin && npm ci"
+  },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }

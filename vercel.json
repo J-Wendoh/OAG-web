@@ -1,15 +1,9 @@
 {
   "version": 2,
   "name": "oag-web-system",
-  "builds": [
-    {
-      "src": "scripts/build-combined.sh",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist-combined"
-      }
-    }
-  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist-combined",
+  "installCommand": "npm install",
   "routes": [
     {
       "src": "/admin/(.*)",
