@@ -506,12 +506,12 @@ const SheriaBot: React.FC = () => {
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyPress={handleKeyPress}
                       placeholder="Ask me anything or type 'complaint' to file with the AG"
-                      className="flex-1 px-4 py-3 text-sm bg-gray-50 border border-gray-300 rounded-xl text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-all duration-200 focus:bg-white"
+                      className="flex-1 px-4 py-3 min-h-[44px] text-base bg-gray-50 border border-gray-300 rounded-xl text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-all duration-200 focus:bg-white"
                     />
                     <motion.button
                       onClick={handleSendMessage}
                       disabled={!inputValue.trim() || isTyping}
-                      className="bg-gradient-to-r from-[#DC143C] to-[#006600] text-white p-3 rounded-xl hover:from-[#B91C3C] hover:to-[#059669] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 shadow-lg"
+                      className="bg-gradient-to-r from-[#DC143C] to-[#006600] text-white p-3 min-w-[44px] min-h-[44px] rounded-xl hover:from-[#B91C3C] hover:to-[#059669] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0 shadow-lg flex items-center justify-center"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -602,7 +602,7 @@ const SheriaBot: React.FC = () => {
                         type="tel"
                         value={complaintForm.phone}
                         onChange={(e) => handleComplaintFormChange('phone', e.target.value)}
-                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors"
+                        className="w-full pl-10 pr-3 py-3 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors text-base"
                         placeholder="+254 700 000 000"
                       />
                     </div>
@@ -616,7 +616,7 @@ const SheriaBot: React.FC = () => {
                       type="text"
                       value={complaintForm.subject}
                       onChange={(e) => handleComplaintFormChange('subject', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors"
+                      className="w-full px-3 py-3 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors text-base"
                       placeholder="Brief description of your complaint"
                       required
                     />
@@ -630,7 +630,7 @@ const SheriaBot: React.FC = () => {
                       value={complaintForm.description}
                       onChange={(e) => handleComplaintFormChange('description', e.target.value)}
                       rows={4}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors resize-none"
+                      className="w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors resize-none text-base"
                       placeholder="Please provide detailed information about your complaint..."
                       required
                     />
@@ -660,18 +660,18 @@ const SheriaBot: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex space-x-3 pt-4">
+                  <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-3 pt-4">
                     <button
                       type="button"
                       onClick={handleCloseComplaintForm}
-                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                      className="flex-1 px-4 py-3 min-h-[44px] border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors text-base font-medium"
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
                       onClick={handleComplaintSubmit}
-                      className="flex-1 px-4 py-2 bg-gradient-to-r from-[#DC143C] to-[#006600] text-white rounded-lg hover:from-[#B91C3C] hover:to-[#059669] transition-all duration-200"
+                      className="flex-1 px-4 py-3 min-h-[44px] bg-gradient-to-r from-[#DC143C] to-[#006600] text-white rounded-lg hover:from-[#B91C3C] hover:to-[#059669] transition-all duration-200 text-base font-medium"
                     >
                       Submit Complaint
                     </button>
