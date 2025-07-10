@@ -232,10 +232,7 @@ const LegalEducationPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Video Library Section */}
-      <section id="video-library">
-        <LegalEducationVideoLibrary />
-      </section>
+
 
       {/* Call to Action */}
       <section className="py-16 bg-gradient-to-r from-kenya-green-600 to-kenya-green-700 text-white">
