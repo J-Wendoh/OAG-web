@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle, X, Upload, CheckCircle, Send } from 'lucide-react';
+import AccessibilityTool from './AccessibilityTool';
 import { supabase } from '../lib/supabase';
 import {
   sanitizeText,
@@ -236,19 +237,25 @@ const ComplaintSystem: React.FC = () => {
 
   return (
     <>
-      {/* Complaint Button - Glassmorphism style */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-24 z-40 bg-gradient-to-r from-kenya-green-600/90 to-kenya-green-700/90 backdrop-blur-md text-white px-6 py-3 rounded-full shadow-2xl hover:from-kenya-green-700/90 hover:to-kenya-green-800/90 transition-all duration-300 hover:scale-110 animate-pulse border border-white/20"
-        aria-label={t('complaints.buttonLabel', 'File a complaint')}
-      >
-        <div className="flex items-center space-x-2">
-          <AlertCircle className="w-5 h-5" />
-          <span className="text-sm font-medium hidden md:block">
-            📢 {t('complaints.buttonText', 'File a Complaint with the AG')}
-          </span>
-        </div>
-      </button>
+      {/* Floating Action Buttons Container */}
+      <div className="fixed bottom-6 right-6 z-40 flex flex-col space-y-4">
+        {/* Accessibility Tool */}
+        <AccessibilityTool />
+
+        {/* Complaint Button - Glassmorphism style */}
+        <button
+          onClick={() => setIsOpen(true)}
+          className="bg-gradient-to-r from-kenya-green-600/90 to-kenya-green-700/90 backdrop-blur-md text-white px-6 py-3 rounded-full shadow-2xl hover:from-kenya-green-700/90 hover:to-kenya-green-800/90 transition-all duration-300 hover:scale-110 animate-pulse border border-white/20"
+          aria-label={t('complaints.buttonLabel', 'File a complaint')}
+        >
+          <div className="flex items-center space-x-2">
+            <AlertCircle className="w-5 h-5" />
+            <span className="text-sm font-medium hidden md:block">
+              📢 {t('complaints.buttonText', 'File a Complaint with the AG')}
+            </span>
+          </div>
+        </button>
+      </div>
 
       {/* Toast Notification */}
       <AnimatePresence>

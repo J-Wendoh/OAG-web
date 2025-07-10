@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, X, Send, User, Bot, BookOpen, Sparkles, AlertCircle } from 'lucide-react';
+import { MessageCircle, X, Send, User, Bot, BookOpen, Sparkles, AlertCircle, FileText, Upload, Phone, Mail } from 'lucide-react';
 import { callOpenAI, isOpenAIAvailable, apiLog } from '../utils/api-config';
 
 interface Message {
@@ -13,6 +13,15 @@ interface Message {
   error?: boolean;
 }
 
+interface ComplaintForm {
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  description: string;
+  attachment?: File;
+}
+
 const SheriaBot: React.FC = () => {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
@@ -20,6 +29,16 @@ const SheriaBot: React.FC = () => {
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isAIMode, setIsAIMode] = useState(isOpenAIAvailable());
+  const [showComplaintForm, setShowComplaintForm] = useState(false);
+  const [hasShownWelcome, setHasShownWelcome] = useState(false);
+  const [complaintForm, setComplaintForm] = useState<ComplaintForm>({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    description: '',
+    attachment: undefined
+  });
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Comprehensive Kenyan law keywords
@@ -121,9 +140,7 @@ const SheriaBot: React.FC = () => {
 
   useEffect(() => {
     if (isOpen && messages.length === 0) {
-      const welcomeMessage = isAIMode
-        ? '🇰🇪⚖️ Habari! I\'m Sheria, your AI-powered legal assistant specializing in Kenyan law and serving as the virtual assistant to the Office of the Attorney General of Kenya.\n\nI can help you understand:\n• Constitutional rights and freedoms\n• Marriage and family law\n• Employment and labor rights\n• Property and land laws\n• Criminal justice procedures\n• Court processes and legal aid\n• Business and commercial law\n\nAsk me anything about Kenyan law!'
-        : '📘 Hi! I\'m Sheria, your legal assistant specializing in Kenyan law. I can help you understand various legal topics including marriage laws, constitutional rights, employment law, and more. Ask me anything about Kenyan law!';
+      const welcomeMessage = 'Welcome! You can ask me anything about Kenyan law or file a complaint with the Attorney General. How can I help you today?\n\n💬 Ask legal questions\n📝 Type "complaint" to file a complaint with the AG';
 
       setMessages([{
         id: '1',
@@ -156,6 +173,25 @@ const SheriaBot: React.FC = () => {
     setMessages(prev => [...prev, userMessage]);
     const currentInput = inputValue;
     setInputValue('');
+
+    // Check for complaint keywords
+    const complaintKeywords = ['complaint', 'complain', 'file complaint', 'lodge complaint', 'report', 'grievance', 'issue', 'problem'];
+    const isComplaintRequest = complaintKeywords.some(keyword =>
+      currentInput.toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    if (isComplaintRequest) {
+      setShowComplaintForm(true);
+      const botMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        text: '📋 I understand you want to file a complaint with the Attorney General\'s office. I\'ve opened the complaint form for you. Please fill in all the required details and we\'ll ensure your complaint is properly submitted and tracked.',
+        sender: 'bot',
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, botMessage]);
+      return;
+    }
+
     setIsTyping(true);
 
     try {
@@ -233,6 +269,54 @@ const SheriaBot: React.FC = () => {
     }
   };
 
+  const handleComplaintFormChange = (field: keyof ComplaintForm, value: string | File) => {
+    setComplaintForm(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleComplaintSubmit = async () => {
+    // Validate required fields
+    if (!complaintForm.name || !complaintForm.email || !complaintForm.subject || !complaintForm.description) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
+    // Here you would typically send the complaint to your backend
+    // For now, we'll just show a success message
+    const botMessage: Message = {
+      id: Date.now().toString(),
+      text: `✅ Thank you, ${complaintForm.name}! Your complaint has been successfully submitted to the Attorney General's office. You will receive a confirmation email at ${complaintForm.email} with your complaint reference number. Our team will review your complaint and respond within 5-7 business days.`,
+      sender: 'bot',
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, botMessage]);
+    setShowComplaintForm(false);
+
+    // Reset form
+    setComplaintForm({
+      name: '',
+      email: '',
+      phone: '',
+      subject: '',
+      description: '',
+      attachment: undefined
+    });
+  };
+
+  const handleCloseComplaintForm = () => {
+    setShowComplaintForm(false);
+    const botMessage: Message = {
+      id: Date.now().toString(),
+      text: 'No problem! If you change your mind and want to file a complaint later, just type "complaint" and I\'ll help you with the form.',
+      sender: 'bot',
+      timestamp: new Date()
+    };
+    setMessages(prev => [...prev, botMessage]);
+  };
+
 
 
   return (
@@ -240,7 +324,7 @@ const SheriaBot: React.FC = () => {
       {/* Floating Action Button - Glass-morphism design */}
       <motion.button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-40 group"
+        className="fixed bottom-6 left-6 z-40 group"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.95 }}
         aria-label="Chat with Sheria Bot"
@@ -249,15 +333,13 @@ const SheriaBot: React.FC = () => {
           {/* Glow effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-[#DC143C] via-[#006600] to-[#DC143C] rounded-full blur-lg opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
 
-          {/* Main button */}
-          <div className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-4 shadow-2xl hover:bg-white/20 transition-all duration-300">
-            <div className="flex items-center justify-center">
-              {isAIMode ? (
-                <Sparkles className="w-6 h-6 text-white drop-shadow-lg" />
-              ) : (
-                <MessageCircle className="w-6 h-6 text-white drop-shadow-lg" />
-              )}
-            </div>
+          {/* Main button - Ensuring 44px minimum touch target */}
+          <div className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-full p-3 min-w-[44px] min-h-[44px] shadow-2xl hover:bg-white/20 transition-all duration-300 flex items-center justify-center">
+            {isAIMode ? (
+              <Sparkles className="w-6 h-6 text-white drop-shadow-lg" />
+            ) : (
+              <MessageCircle className="w-6 h-6 text-white drop-shadow-lg" />
+            )}
           </div>
 
           {/* AI indicator badge */}
@@ -423,7 +505,7 @@ const SheriaBot: React.FC = () => {
                       value={inputValue}
                       onChange={(e) => setInputValue(e.target.value)}
                       onKeyPress={handleKeyPress}
-                      placeholder="Ask me about your constitutional rights, employment law, property rights, marriage law, criminal justice..."
+                      placeholder="Ask me anything or type 'complaint' to file with the AG"
                       className="flex-1 px-4 py-3 text-sm bg-gray-50 border border-gray-300 rounded-xl text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-all duration-200 focus:bg-white"
                     />
                     <motion.button
@@ -440,6 +522,164 @@ const SheriaBot: React.FC = () => {
               </div>
             </motion.div>
           </div>
+        )}
+
+        {/* Complaint Form Modal */}
+        {showComplaintForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[60] p-4"
+            onClick={handleCloseComplaintForm}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto mx-4 sm:mx-0"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-4 sm:p-6">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-gradient-to-br from-[#DC143C] to-[#006600] rounded-full flex items-center justify-center">
+                      <FileText className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">File a Complaint</h3>
+                      <p className="text-sm text-gray-600">Submit your complaint to the Attorney General's office</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleCloseComplaintForm}
+                    className="p-3 hover:bg-gray-100 rounded-full transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-gray-500" />
+                  </button>
+                </div>
+
+                <form className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        value={complaintForm.name}
+                        onChange={(e) => handleComplaintFormChange('name', e.target.value)}
+                        className="w-full px-3 py-3 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors text-base"
+                        placeholder="Enter your full name"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address *
+                      </label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <input
+                          type="email"
+                          value={complaintForm.email}
+                          onChange={(e) => handleComplaintFormChange('email', e.target.value)}
+                          className="w-full pl-10 pr-3 py-3 min-h-[44px] border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors text-base"
+                          placeholder="your.email@example.com"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone Number
+                    </label>
+                    <div className="relative">
+                      <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                      <input
+                        type="tel"
+                        value={complaintForm.phone}
+                        onChange={(e) => handleComplaintFormChange('phone', e.target.value)}
+                        className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors"
+                        placeholder="+254 700 000 000"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Subject *
+                    </label>
+                    <input
+                      type="text"
+                      value={complaintForm.subject}
+                      onChange={(e) => handleComplaintFormChange('subject', e.target.value)}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors"
+                      placeholder="Brief description of your complaint"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Description *
+                    </label>
+                    <textarea
+                      value={complaintForm.description}
+                      onChange={(e) => handleComplaintFormChange('description', e.target.value)}
+                      rows={4}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#DC143C] focus:border-[#DC143C] transition-colors resize-none"
+                      placeholder="Please provide detailed information about your complaint..."
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Attachment (Optional)
+                    </label>
+                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center hover:border-[#DC143C] transition-colors">
+                      <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm text-gray-600">
+                        Click to upload or drag and drop
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        PDF, DOC, DOCX, JPG, PNG (Max 10MB)
+                      </p>
+                      <input
+                        type="file"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleComplaintFormChange('attachment', file);
+                        }}
+                        className="hidden"
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex space-x-3 pt-4">
+                    <button
+                      type="button"
+                      onClick={handleCloseComplaintForm}
+                      className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleComplaintSubmit}
+                      className="flex-1 px-4 py-2 bg-gradient-to-r from-[#DC143C] to-[#006600] text-white rounded-lg hover:from-[#B91C3C] hover:to-[#059669] transition-all duration-200"
+                    >
+                      Submit Complaint
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </>

@@ -4,20 +4,7 @@ import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { Calendar, ArrowRight, Crown, Users } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import { apiRequest, API_CONFIG, isApiAvailable, apiLog } from '../utils/api-config';
-
-interface NewsArticle {
-  id: string;
-  title_en: string;
-  title_sw: string;
-  excerpt_en: string;
-  excerpt_sw: string;
-  featured_image_url: string | null;
-  category: string;
-  published_at: string;
-  is_featured: boolean;
-}
+import { getPublishedNews, type NewsArticle } from '../data/processedNewsData';
 
 const MostRecentUpdates: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -30,71 +17,20 @@ const MostRecentUpdates: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch recent news from database
+  // Load recent news from static data
   useEffect(() => {
-    const fetchRecentNews = async () => {
-      try {
-        apiLog('Fetching recent news updates...');
-
-        // Try API first, then fallback to Supabase
-        const apiAvailable = await isApiAvailable();
-
-        if (apiAvailable) {
-          apiLog('Using API endpoint for recent news');
-          const articles = await apiRequest<NewsArticle[]>(API_CONFIG.ENDPOINTS.NEWS);
-          const recentArticles = articles.slice(0, 2);
-          setRecentUpdates(recentArticles);
-        } else {
-          apiLog('Using Supabase for recent news');
-          // Use Supabase as fallback
-          const { data: articles, error: supabaseError } = await supabase
-            .from('news_articles')
-            .select('*')
-            .eq('status', 'published')
-            .order('published_at', { ascending: false })
-            .limit(2);
-
-          if (supabaseError) {
-            throw new Error(`Supabase error: ${supabaseError.message}`);
-          }
-
-          setRecentUpdates(articles || []);
-        }
-      } catch (err) {
-        console.error('Error fetching recent news:', err);
-        setError(err instanceof Error ? err.message : 'Failed to load news');
-
-        // Fallback to static content
-        setRecentUpdates([
-          {
-            id: 'fallback-1',
-            title_en: 'Attorney General Leads Constitutional Review',
-            title_sw: 'Mwanasheria Mkuu Anaongoza Mapitio ya Katiba',
-            excerpt_en: 'Hon. Dorcas Oduor chairs the newly formed Constitutional Review Committee to assess implementation of constitutional provisions.',
-            excerpt_sw: 'Mhe. Dorcas Oduor anaongoza Kamati mpya ya Mapitio ya Katiba ili kutathmini utekelezaji wa masharti ya kikatiba.',
-            featured_image_url: '/newsmarch20.png',
-            category: 'Legal Affairs',
-            published_at: '2025-03-20T09:00:00Z',
-            is_featured: true
-          },
-          {
-            id: 'fallback-2',
-            title_en: 'Strengthening International Legal Partnerships',
-            title_sw: 'Kuimarisha Ushirikiano wa Kimataifa wa Kisheria',
-            excerpt_en: 'The Office continues to build strategic partnerships with international legal institutions for enhanced cooperation.',
-            excerpt_sw: 'Ofisi inaendelea kujenga ushirikiano wa kimkakati na taasisi za kisheria za kimataifa kwa ushirikiano ulioboreshwa.',
-            featured_image_url: '/AG5.jpg',
-            category: 'International Relations',
-            published_at: '2025-03-19T10:00:00Z',
-            is_featured: false
-          }
-        ] as NewsArticle[]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRecentNews();
+    try {
+      // Use static news data for better performance and reliability
+      const publishedArticles = getPublishedNews();
+      const recentArticles = publishedArticles.slice(0, 2);
+      setRecentUpdates(recentArticles);
+    } catch (err) {
+      console.error('Error loading recent news:', err);
+      setError('Failed to load news');
+      setRecentUpdates([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   return (
@@ -228,7 +164,7 @@ const MostRecentUpdates: React.FC = () => {
                       </p>
 
                       <Link
-                        to="/news"
+                        to={`/news/${update.slug}`}
                         className="flex items-center text-kenya-green-700 hover:text-kenya-green-800 font-semibold transition-all duration-300 micro-slide"
                       >
                         {t('updates.readFull')}

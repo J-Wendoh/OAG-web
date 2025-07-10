@@ -9,6 +9,7 @@ import { initializePerformanceOptimizations } from './utils/performance';
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import NewsPage from './pages/NewsPage';
+import NewsDetailPage from './pages/NewsDetailPage';
 import ServicesPage from './pages/ServicesPage';
 import ContactPage from './pages/ContactPage';
 import CareersPage from './pages/CareersPage';
@@ -53,6 +54,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/news" element={<NewsPage />} />
+            <Route path="/news/:slug" element={<NewsDetailPage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/careers" element={<CareersPage />} />

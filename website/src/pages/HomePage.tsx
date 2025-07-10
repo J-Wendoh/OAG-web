@@ -18,8 +18,12 @@ const HomePage: React.FC = () => {
   return (
     <>
       <HeroSection />
+      <FeatureCards />
+      <AttorneyGeneralSection />
+      <MostRecentUpdates />
+      <OurMandate />
 
-      {/* Know Your Rights Video Section */}
+      {/* Know Your Rights Video Section - Moved after Our Mandate */}
       <section className="py-16 bg-gradient-to-br from-gray-50 to-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
@@ -42,10 +46,6 @@ const HomePage: React.FC = () => {
         </div>
       </section>
 
-      <FeatureCards />
-      <AttorneyGeneralSection />
-      <MostRecentUpdates />
-      <OurMandate />
       <FeaturedLegalResource />
       <CitizenRights />
       <DepartmentsCarousel />

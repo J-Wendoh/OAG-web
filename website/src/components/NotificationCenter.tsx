@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bell, X, Check, AlertCircle, FileText, MessageSquare, Trash2, Settings } from 'lucide-react';
-import { notificationService, Notification } from '../services/NotificationService';
+import { notificationService } from '../services/NotificationService';
+import type { Notification } from '../services/NotificationService';
 
 interface NotificationCenterProps {
   userRole?: string;

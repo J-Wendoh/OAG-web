@@ -10,7 +10,7 @@ import {
   searchNews,
   getNewsByCategory,
   type NewsArticle
-} from '../data/newsData';
+} from '../data/processedNewsData';
 
 
 
@@ -111,12 +111,13 @@ const NewsPage: React.FC = () => {
           >
             <div className="bg-gradient-to-r from-kenya-green-600 to-kenya-green-700 rounded-3xl overflow-hidden shadow-2xl border-4 border-yellow-400">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-                <div className="relative h-64 lg:h-auto">
+                <div className="relative h-64 sm:h-72 md:h-80 lg:h-auto lg:min-h-[400px]">
                   {featuredArticle.featured_image_url ? (
                     <img
                       src={featuredArticle.featured_image_url}
                       alt={featuredArticle.title_en}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover object-center"
+                      loading="lazy"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
@@ -167,7 +168,10 @@ const NewsPage: React.FC = () => {
                       <User className="w-4 h-4 mr-1" />
                       {featuredArticle.author_name || 'AG Communications Team'}
                     </div>
-                    <button className="flex items-center text-white hover:text-yellow-400 font-medium transition-colors">
+                    <button
+                      onClick={() => navigate(`/news/${featuredArticle.slug}`)}
+                      className="flex items-center text-white hover:text-yellow-400 font-medium transition-colors"
+                    >
                       Read Full Story
                       <ArrowRight className="w-4 h-4 ml-1" />
                     </button>
@@ -188,12 +192,13 @@ const NewsPage: React.FC = () => {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-200"
             >
-              <div className="h-48 overflow-hidden">
+              <div className="h-48 sm:h-52 md:h-56 overflow-hidden">
                 {article.featured_image_url ? (
                   <img
                     src={article.featured_image_url}
                     alt={article.title_en}
-                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                    className="w-full h-full object-cover object-center hover:scale-105 transition-transform duration-300"
+                    loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
                       target.style.display = 'none';
@@ -237,7 +242,10 @@ const NewsPage: React.FC = () => {
                     <User className="w-4 h-4 mr-1" />
                     {article.author_name || 'AG Communications Team'}
                   </div>
-                  <button className="flex items-center text-gray-700 hover:text-gray-900 font-medium">
+                  <button
+                    onClick={() => navigate(`/news/${article.slug}`)}
+                    className="flex items-center text-gray-700 hover:text-gray-900 font-medium"
+                  >
                     Read More
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </button>
