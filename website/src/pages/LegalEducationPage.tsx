@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { BookOpen, Play, Users, Scale, Award, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import LegalEducationVideoLibrary from '../components/LegalEducationVideoLibrary';
+
 import RightsEducationVideo from '../components/RightsEducationVideo';
 
 const LegalEducationPage: React.FC = () => {
